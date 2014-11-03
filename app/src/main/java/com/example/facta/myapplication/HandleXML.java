@@ -26,7 +26,7 @@ public class HandleXML {
 
     private String urlString = null;
     private XmlPullParserFactory xmlFactoryObject;
-    public volatile boolean parsingComplete = true;
+    public volatile boolean parsingComplete = false;
 
     public HandleXML(String url)
     {
@@ -125,7 +125,7 @@ public class HandleXML {
                     myparser.setInput(stream, null);
                     parseXMLAndStoreIt(myparser);
                     stream.close();
-                    parsingComplete = false;
+                    parsingComplete = true;
                 }
                 catch (Exception e)
                 {

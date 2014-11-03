@@ -39,7 +39,7 @@ public class MyActivity extends Activity {
     {
         obj = new HandleXML(finalUrl);
         obj.fetchXML();
-        while(obj.parsingComplete);
+        while(!obj.parsingComplete);
         title.setText(obj.getTitle());
         link.setText(obj.getLink());
         description.setText(obj.getDescription());
