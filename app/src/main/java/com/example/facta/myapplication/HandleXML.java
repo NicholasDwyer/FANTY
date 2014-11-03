@@ -45,7 +45,7 @@ public class HandleXML {
         return description;
     }
 
-    public void parseXMLAndStoreIt(XmlPullParser myParser, LinearLayout resultsView)
+    public void parseXMLAndStoreIt(XmlPullParser myParser)
     {
         Log.d("parseXMLAndStoreIt","We are in parse and store");
         int event;
@@ -96,7 +96,7 @@ public class HandleXML {
         }
     }
 
-    public void fetchXML(final LinearLayout viewById)
+    public void fetchXML()
     {
         Thread thread = new Thread(new Runnable() {
             @Override
@@ -123,7 +123,7 @@ public class HandleXML {
                     XmlPullParser myparser = xmlFactoryObject.newPullParser();
                     myparser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
                     myparser.setInput(stream, null);
-                    parseXMLAndStoreIt(myparser, viewById);
+                    parseXMLAndStoreIt(myparser);
                     stream.close();
                     parsingComplete = false;
                 }

@@ -38,7 +38,7 @@ public class MyActivity extends Activity {
     public void fetch(View view)
     {
         obj = new HandleXML(finalUrl);
-        obj.fetchXML((LinearLayout) findViewById(R.id.dynamic_results));
+        obj.fetchXML();
         while(obj.parsingComplete);
         title.setText(obj.getTitle());
         link.setText(obj.getLink());
