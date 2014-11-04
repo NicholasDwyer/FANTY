@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
+import java.util.ArrayList;
+
 
 public class MyActivity extends Activity {
 
@@ -40,9 +42,10 @@ public class MyActivity extends Activity {
         obj = new HandleXML(finalUrl);
         obj.fetchXML();
         while(!obj.parsingComplete);
-        title.setText(obj.getTitle());
-        link.setText(obj.getLink());
-        description.setText(obj.getDescription());
+        ArrayList<RSSInfo> rssInfos = obj.getRssInfos();
+        title.setText(rssInfos.get(0).getTitle());
+        link.setText(rssInfos.get(0).getLink());
+        description.setText(rssInfos.get(0).getDescription());
     }
 
     @Override

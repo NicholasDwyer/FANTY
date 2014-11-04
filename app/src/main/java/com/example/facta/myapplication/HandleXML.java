@@ -3,6 +3,7 @@ package com.example.facta.myapplication;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 
 import android.app.Activity;
 
@@ -20,9 +21,7 @@ import org.xmlpull.v1.XmlPullParserFactory;
  */
 public class HandleXML {
 
-    private String title = "title";
-    private String link = "link";
-    private String description = "description";
+    private ArrayList<RSSInfo> rssInfos;
 
     private String urlString = null;
     private XmlPullParserFactory xmlFactoryObject;
@@ -31,19 +30,9 @@ public class HandleXML {
     public HandleXML(String url)
     {
         this.urlString = url;
+        rssInfos = new ArrayList<RSSInfo>();
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public String getLink() {
-        return link;
-    }
-
-    public String getDescription() {
-        return description;
-    }
 
     public void parseXMLAndStoreIt(XmlPullParser myParser)
     {
@@ -53,12 +42,13 @@ public class HandleXML {
         boolean prelimfound = false;
         boolean item = false;
         int count = 0;
+        RSSInfo info = new RSSInfo();
 
         try {
             event = myParser.getEventType();
 
 
-            while(event != XmlPullParser.END_DOCUMENT && prelimfound == false)
+            while(event != XmlPullParser.END_DOCUMENT && !prelimfound)
             {
                 String name = myParser.getName();
 
@@ -72,18 +62,22 @@ public class HandleXML {
                     case XmlPullParser.END_TAG:
                         if(item) {
                             if (name.equals("title")) {
-                                title = text;
+                                info.setTitle(text);
+                                Log.d("Parse", "Found title " + info.getTitle());
                                 count++;
                             } else if (name.equals("link")) {
-                                link = text;
+                                info.setLink(text);
+                                Log.d("Parse", "Found link " + info.getLink());
                                 count++;
                             } else if (name.equals("description")) {
-                                description = text;
+                                info.setDescription(text);
+                                Log.d("Parse", "Found description " + info.getDescription());
                                 count++;
                             }
                             if(count == 3) prelimfound = true;
                         }
                         if(name.equals("item")) { item = true; }
+                        Log.d("Parse", "at end tag and name = " + name);
                         break;
                 }
 
@@ -92,8 +86,11 @@ public class HandleXML {
         }
         catch (Exception e)
         {
+            Log.d("Parse", "Caught an exeption: " + e.toString() );
             e.printStackTrace();
         }
+
+        rssInfos.add(info);
     }
 
     public void fetchXML()
@@ -136,5 +133,7 @@ public class HandleXML {
 
         thread.start();
     }
+
+    public ArrayList<RSSInfo> getRssInfos() { return rssInfos; }
 
 }
