@@ -8,5 +8,6 @@
     <string name="link">Link</string>
     <string name="description">Description</string>
     <string name="fetch">Fetch Feed</string>
+    <string name="title_activity_results">ResultsActivity</string>
 
 </resources>
