@@ -10,7 +10,6 @@ import android.app.Activity;
 
 
 import android.util.Log;
-import android.widget.LinearLayout;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -39,7 +38,7 @@ public class HandleXML {
         Log.d("parseXMLAndStoreIt","We are in parse and store");
         int event;
         String text = null;
-        boolean prelimfound = false;
+       // boolean prelimfound = false;
         boolean item = false;
         int count = 0;
         RSSInfo info = new RSSInfo();
@@ -48,13 +47,17 @@ public class HandleXML {
             event = myParser.getEventType();
 
 
-            while(event != XmlPullParser.END_DOCUMENT && !prelimfound)
+            while(event != XmlPullParser.END_DOCUMENT /* && !prelimfound */ )
             {
                 String name = myParser.getName();
 
                 switch (event)
                 {
                     case XmlPullParser.START_TAG:
+                        if(name.equals("item"))
+                        {
+                            item = true;
+                        }
                         break;
                     case XmlPullParser.TEXT:
                         text = myParser.getText();
@@ -64,19 +67,25 @@ public class HandleXML {
                             if (name.equals("title")) {
                                 info.setTitle(text);
                                 Log.d("Parse", "Found title " + info.getTitle());
-                                count++;
+                                //count++;
                             } else if (name.equals("link")) {
                                 info.setLink(text);
                                 Log.d("Parse", "Found link " + info.getLink());
-                                count++;
+                                //count++;
                             } else if (name.equals("description")) {
                                 info.setDescription(text);
                                 Log.d("Parse", "Found description " + info.getDescription());
-                                count++;
+                                //count++;
                             }
-                            if(count == 3) prelimfound = true;
+                            //if(count == 3) prelimfound = true;
                         }
-                        if(name.equals("item")) { item = true; }
+                        if(name.equals("item"))
+                        {
+                            rssInfos.add(count,info);
+                            count++;
+                            item = false;
+                            info = new RSSInfo();
+                        }
                         Log.d("Parse", "at end tag and name = " + name);
                         break;
                 }
@@ -90,7 +99,7 @@ public class HandleXML {
             e.printStackTrace();
         }
 
-        rssInfos.add(info);
+        //rssInfos.add(info);
     }
 
     public void fetchXML()
