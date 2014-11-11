@@ -17,12 +17,29 @@ import java.util.ArrayList;
 
 public class ResultsActivity extends Activity {
 
-    private String finalUrl = "http://rss.cnn.com/rss/cnn_topstories.rss";
+    private ArrayList<String> finalUrls = new ArrayList<String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_results);
+        finalUrls.add("http://rss.cnn.com/rss/cnn_topstories.rss");
+        finalUrls.add("http://rss.cnn.com/rss/cnn_world.rss");
+        finalUrls.add("http://rss.cnn.com/rss/cnn_us.rss");
+        finalUrls.add("http://rss.cnn.com/rss/money_latest.rss");
+        finalUrls.add("http://rss.cnn.com/rss/cnn_allpolitics.rss");
+        finalUrls.add("http://rss.cnn.com/rss/cnn_crime.rss");
+        finalUrls.add("http://rss.cnn.com/rss/cnn_tech.rss");
+        finalUrls.add("http://rss.cnn.com/rss/cnn_health.rss");
+        finalUrls.add("http://rss.cnn.com/rss/cnn_showbiz.rss");
+        finalUrls.add("http://rss.cnn.com/rss/cnn_travel.rss");
+        finalUrls.add("http://rss.cnn.com/rss/cnn_living.rss");
+        finalUrls.add("http://rss.cnn.com/rss/cnn_freevideo.rss");
+        finalUrls.add("http://rss.cnn.com/rss/cnn_studentnews.rss");
+        finalUrls.add("http://rss.cnn.com/rss/cnn_mostpopular.rss");
+        finalUrls.add("http://rss.cnn.com/rss/cnn_latest.rss");
+        finalUrls.add("http://rss.ireport.com/feeds/oncnn.rss");
+        finalUrls.add("http://rss.cnn.com/rss/cnn_behindthescenes.rss");
         this.fetch();
     }
 
@@ -51,7 +68,7 @@ public class ResultsActivity extends Activity {
 
     private void fetch()
     {
-        HandleXML obj = new HandleXML(finalUrl);
+        HandleXML obj = new HandleXML(finalUrls);
         obj.fetchXML();
         while(!obj.parsingComplete);
         final ArrayList<RSSInfo> rssInfos = obj.getRssInfos();

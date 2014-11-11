@@ -21,17 +21,19 @@ import org.xmlpull.v1.XmlPullParserFactory;
 public class HandleXML {
 
     private ArrayList<RSSInfo> rssInfos;
+    private ArrayList<String> urlStrings;
 
     private String urlString = null;
     private XmlPullParserFactory xmlFactoryObject;
     public volatile boolean parsingComplete = false;
 
-    public HandleXML(String url)
+    public HandleXML(ArrayList<String> url)
     {
-        this.urlString = url;
+        this.urlStrings = url;
         rssInfos = new ArrayList<RSSInfo>();
     }
 
+    public ArrayList<RSSInfo> getRssInfos() { return rssInfos; }
 
     public void parseXMLAndStoreIt(XmlPullParser myParser)
     {
@@ -104,34 +106,40 @@ public class HandleXML {
 
     public void fetchXML()
     {
+
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
-                try
-                {
-                    Log.d("fetchXML", urlString);
-                    URL url = new URL(urlString);
-                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                    if (conn != null) {
-                        Log.d("fetchXML","The connection is not null");
+                try {
+                    for (int i = 0; i < urlStrings.size(); i++)
+                    {
+
+
+                        Log.d("fetchXML", urlStrings.get(i));
+                        URL url = new URL(urlStrings.get(i));
+                        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                        if (conn != null) {
+                            Log.d("fetchXML", "The connection is not null");
+                        }
+                        conn.setReadTimeout(10000 /* milliseconds */);
+                        conn.setConnectTimeout(15000 /*milliseconds */);
+                        conn.setRequestMethod("GET");
+                        conn.setDoInput(true);
+
+                        /* Starts the query */
+                        conn.connect();
+
+                        InputStream stream = conn.getInputStream();
+
+                        xmlFactoryObject = XmlPullParserFactory.newInstance();
+                        XmlPullParser myparser = xmlFactoryObject.newPullParser();
+                        myparser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
+                        myparser.setInput(stream, null);
+                        parseXMLAndStoreIt(myparser);
+                        stream.close();
+                        parsingComplete = true;
+
                     }
-                    conn.setReadTimeout(10000 /* milliseconds */);
-                    conn.setConnectTimeout(15000 /*milliseconds */);
-                    conn.setRequestMethod("GET");
-                    conn.setDoInput(true);
-
-                    /* Starts the query */
-                    conn.connect();
-
-                    InputStream stream = conn.getInputStream();
-
-                    xmlFactoryObject = XmlPullParserFactory.newInstance();
-                    XmlPullParser myparser = xmlFactoryObject.newPullParser();
-                    myparser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
-                    myparser.setInput(stream, null);
-                    parseXMLAndStoreIt(myparser);
-                    stream.close();
-                    parsingComplete = true;
                 }
                 catch (Exception e)
                 {
@@ -141,8 +149,8 @@ public class HandleXML {
         });
 
         thread.start();
+
     }
 
-    public ArrayList<RSSInfo> getRssInfos() { return rssInfos; }
 
 }

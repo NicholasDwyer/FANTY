@@ -14,6 +14,8 @@ import java.util.ArrayList;
 public class MyActivity extends Activity {
 
     //private String finalUrl = "http://tutorialspoint.com/android/sampleXML.xml";
+    private ArrayList<String> finalUrls;
+
     private String finalUrl = "http://rss.cnn.com/rss/cnn_topstories.rss";
     private HandleXML obj;
     private EditText title, link, description;
@@ -39,7 +41,7 @@ public class MyActivity extends Activity {
 
     public void fetch(View view)
     {
-        obj = new HandleXML(finalUrl);
+        obj = new HandleXML(new ArrayList<String>());
         obj.fetchXML();
         while(!obj.parsingComplete);
         ArrayList<RSSInfo> rssInfos = obj.getRssInfos();
