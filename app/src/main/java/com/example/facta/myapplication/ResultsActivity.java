@@ -14,6 +14,22 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+/* TODO
+   Need to make a config file that has the following format.
+   site.names          = CNN,FOX,NBC,AP
+
+   site.CNN.enabled   = yes
+   site.CNN.searchtag = item
+   site.CNN.titletag  = title
+   site.CNN.linktag   = link
+   site.CNN.descriptiontag = description
+   site.CNN.numurls   = 10
+   site.CNN.url.1     = "https://www.cnn.com/top_stories.rss
+   site.CNN.url.2     = "https://www.cnn.com/world_politics.rss
+
+   site.FOX.enabled   = no
+   site.FOX.searchtag = story
+ */
 
 public class ResultsActivity extends Activity {
 
