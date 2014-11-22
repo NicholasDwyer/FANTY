@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <siteproviders name="allSites" value="CNN" />
+
+    <site name="CNN.enabled"        value="yes" />
+    <site name="CNN.elementTag"     value="item" />
+    <site name="CNN.titleTag"       value="title" />
+    <site name="CNN.linkTag"        value="link" />
+    <site name="CNN.descriptionTag" value="description" />
+    <site name="CNN.numUrls"        value="17" />
+
+    <site name="CNN.url0"  value="http://rss.cnn.com/rss/cnn_topstories.rss" />
+    <site name="CNN.url1"  value="http://rss.cnn.com/rss/cnn_world.rss" />
+    <site name="CNN.url2"  value="http://rss.cnn.com/rss/cnn_us.rss" />
+    <site name="CNN.url3"  value="http://rss.cnn.com/rss/money_latest.rss" />
+    <site name="CNN.url4"  value="http://rss.cnn.com/rss/cnn_allpolitics.rss" />
+    <site name="CNN.url5"  value="http://rss.cnn.com/rss/cnn_crime.rss" />
+    <site name="CNN.url6"  value="http://rss.cnn.com/rss/cnn_tech.rss" />
+    <site name="CNN.url7"  value="http://rss.cnn.com/rss/cnn_health.rss" />
+    <site name="CNN.url8"  value="http://rss.cnn.com/rss/cnn_showbiz.rss" />
+    <site name="CNN.url9"  value="http://rss.cnn.com/rss/cnn_travel.rss" />
+    <site name="CNN.url10" value="http://rss.cnn.com/rss/cnn_living.rss" />
+    <site name="CNN.url11" value="http://rss.cnn.com/rss/cnn_freevideo.rss" />
+    <site name="CNN.url12" value="http://rss.cnn.com/rss/cnn_studentnews.rss" />
+    <site name="CNN.url13" value="http://rss.cnn.com/rss/cnn_mostpopular.rss" />
+    <site name="CNN.url14" value="http://rss.cnn.com/rss/cnn_latest.rss" />
+    <site name="CNN.url15" value="http://rss.ireport.com/feeds/oncnn.rss" />
+    <site name="CNN.url16" value="http://rss.cnn.com/rss/cnn_behindthescenes.rss" />
+
+</resources>
