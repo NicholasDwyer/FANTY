@@ -87,6 +87,9 @@ public class ResultsActivity extends Activity {
 
     private void fetch()
     {
+        /**TODO possibly load config then for each provider pass in RSSProviderInfo into HandleXML
+           That way HandleXML can set all the tags it needs and then parse the urls from the param
+         */
         HandleXML obj = new HandleXML(finalUrls);
         obj.fetchXML();
         while(!obj.parsingComplete);

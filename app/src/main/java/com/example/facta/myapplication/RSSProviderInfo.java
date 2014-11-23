@@ -67,4 +67,15 @@ public class RSSProviderInfo {
     {
         urls = new ArrayList<String>();
     }
+
+    public boolean isComplete()
+    {
+        if(!elementTag.isEmpty() && !titleTag.isEmpty() && !linkTag.isEmpty()
+        && !descriptionTag.isEmpty() && !urls.isEmpty())
+        {
+            return true;
+        }
+
+        return false;
+    }
 }
