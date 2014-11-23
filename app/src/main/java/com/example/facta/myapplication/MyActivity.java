@@ -39,6 +39,7 @@ public class MyActivity extends Activity {
         return true;
     }
 
+    /**
     public void fetch(View view)
     {
         obj = new HandleXML(new ArrayList<String>());
@@ -49,7 +50,7 @@ public class MyActivity extends Activity {
         link.setText(rssInfos.get(0).getLink());
         description.setText(rssInfos.get(0).getDescription());
     }
-
+*/
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will

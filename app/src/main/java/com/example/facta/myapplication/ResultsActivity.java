@@ -85,46 +85,61 @@ public class ResultsActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void fetch()
-    {
+    private void fetch() {
         /**TODO possibly load config then for each provider pass in RSSProviderInfo into HandleXML
-           That way HandleXML can set all the tags it needs and then parse the urls from the param
+         That way HandleXML can set all the tags it needs and then parse the urls from the param
          */
-        HandleXML obj = new HandleXML(finalUrls);
-        obj.fetchXML();
-        while(!obj.parsingComplete);
-        final ArrayList<RSSInfo> rssInfos = obj.getRssInfos();
-        final TableLayout tableLayout = (TableLayout) findViewById(R.id.results_table);
 
-        Log.d("fetch", "Size of rssinfos " + rssInfos.size());
+        SiteConfig siteConfig = new SiteConfig();
+        siteConfig.loadConfig(getApplicationContext(), R.xml.sites);
+        ArrayList<RSSProviderInfo> siteConfigProvierInfos = siteConfig.getProvierInfos();
 
-        for(int i=0; i < rssInfos.size(); i++)
-        {
-            final int index = i;
-            final TableRow tableRow = new TableRow(this);
-            tableRow.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT));
+        for (int k = 0; k < siteConfigProvierInfos.size(); k++) {
 
-            //Get information from infos
-            final TextView textView = new TextView(this);
-            textView.setText(rssInfos.get(index).getTitle());
-            textView.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT));
+            HandleXML obj = new HandleXML(siteConfigProvierInfos.get(k));
+            obj.fetchXML();
 
-            tableRow.setClickable(true);
-            tableRow.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(rssInfos.get(index).getLink()));
-                    startActivity(intent);
+            while (!obj.parsingComplete) {
+                try {
+                    Thread.sleep(500, 0);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
-            });
 
-            tableRow.addView(textView);
-            tableLayout.addView(tableRow);
+                final ArrayList<RSSInfo> rssInfos = obj.getRssInfos();
+                final TableLayout tableLayout = (TableLayout) findViewById(R.id.results_table);
+
+                Log.d("fetch", "Size of rssinfos " + rssInfos.size());
+
+                for (int i = 0; i < rssInfos.size(); i++) {
+                    final int index = i;
+                    final TableRow tableRow = new TableRow(this);
+                    tableRow.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT));
+
+                    //Get information from infos
+                    final TextView textView = new TextView(this);
+                    textView.setText(rssInfos.get(index).getTitle());
+                    textView.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT));
+
+                    tableRow.setClickable(true);
+                    tableRow.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(rssInfos.get(index).getLink()));
+                            startActivity(intent);
+                        }
+                    });
+
+                    tableRow.addView(textView);
+                    tableLayout.addView(tableRow);
+
+                }
+
+                Log.d("fetch", "tableLayout = " + tableLayout.toString());
+
+            }
 
         }
 
-        Log.d("fetch", "tableLayout = " + tableLayout.toString());
-
     }
-
 }

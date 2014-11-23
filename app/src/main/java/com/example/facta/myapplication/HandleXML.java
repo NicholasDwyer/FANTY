@@ -5,9 +5,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
-import android.app.Activity;
-
-
 
 import android.util.Log;
 
@@ -21,15 +18,21 @@ import org.xmlpull.v1.XmlPullParserFactory;
 public class HandleXML {
 
     private ArrayList<RSSInfo> rssInfos;
-    private ArrayList<String> urlStrings;
+
+    private RSSProviderInfo providerInfo;
+
+    private String elementTag;
+    private String titleTag;
+    private String linkTag;
+    private String descriptionTag;
 
     private String urlString = null;
     private XmlPullParserFactory xmlFactoryObject;
     public volatile boolean parsingComplete = false;
 
-    public HandleXML(ArrayList<String> url)
+    public HandleXML(RSSProviderInfo info)
     {
-        this.urlStrings = url;
+        this.providerInfo = info;
         rssInfos = new ArrayList<RSSInfo>();
     }
 
@@ -66,22 +69,21 @@ public class HandleXML {
                         break;
                     case XmlPullParser.END_TAG:
                         if(item) {
-                            if (name.equals("title")) {
+                            if (name.equals(titleTag)) {
                                 info.setTitle(text);
                                 Log.d("Parse", "Found title " + info.getTitle());
                                 //count++;
-                            } else if (name.equals("link")) {
+                            } else if (name.equals(linkTag)) {
                                 info.setLink(text);
                                 Log.d("Parse", "Found link " + info.getLink());
                                 //count++;
-                            } else if (name.equals("description")) {
+                            } else if (name.equals(descriptionTag)) {
                                 info.setDescription(text);
                                 Log.d("Parse", "Found description " + info.getDescription());
                                 //count++;
                             }
-                            //if(count == 3) prelimfound = true;
                         }
-                        if(name.equals("item"))
+                        if(name.equals(elementTag))
                         {
                             rssInfos.add(count,info);
                             count++;
@@ -106,17 +108,21 @@ public class HandleXML {
 
     public void fetchXML()
     {
+        elementTag     = providerInfo.getElementTag();
+        titleTag       = providerInfo.getTitleTag();
+        linkTag        = providerInfo.getLinkTag();
+        descriptionTag = providerInfo.getDescriptionTag();
 
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    for (int i = 0; i < urlStrings.size(); i++)
+                    for (int i = 0; i < providerInfo.getUrls().size(); i++)
                     {
 
 
-                        Log.d("fetchXML", urlStrings.get(i));
-                        URL url = new URL(urlStrings.get(i));
+                        Log.d("fetchXML", providerInfo.getUrls().get(i));
+                        URL url = new URL(providerInfo.getUrls().get(i));
                         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                         if (conn != null) {
                             Log.d("fetchXML", "The connection is not null");
