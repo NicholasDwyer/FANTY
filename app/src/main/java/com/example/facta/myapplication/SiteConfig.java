@@ -53,7 +53,7 @@ public class SiteConfig {
     private RSSProviderInfo LoadProviderInfo(XmlResourceParser parser, String provider) {
 
         RSSProviderInfo info = new RSSProviderInfo();
-        String attrName;
+        String attrName = new String();
 
         try {
             parser.next();
@@ -64,39 +64,49 @@ public class SiteConfig {
 
                     attrName = parser.getAttributeValue(null, "name");
                     
-                    if(attrName.equals(provider + ".enabled"))
+                    if(attrName.equalsIgnoreCase(provider + ".enabled"))
                     {
-                        return null; //If it's not enabled don't include it in the config
+                        String value = parser.getAttributeValue(null, "value");
+                        if(value.equalsIgnoreCase("no")) {
+                            Log.d("LoadProviderInfo", "value does equal no");
+                            return null; //If it's not enabled don't include it in the config
+                        }
                     }
-                    else if(attrName.equals(provider + ".elementTag"))
+                    else if(attrName.equalsIgnoreCase(provider + ".elementTag"))
                     {
                         info.setElementTag(parser.getAttributeValue(null, "value"));
                     }
-                    else if(attrName.equals(provider + ".titleTag"))
+                    else if(attrName.equalsIgnoreCase(provider + ".titleTag"))
                     {
                         info.setTitleTag(parser.getAttributeValue(null, "value"));
                     }
-                    else if(attrName.equals(provider + ".linkTag"))
+                    else if(attrName.equalsIgnoreCase(provider + ".linkTag"))
                     {
                         info.setLinkTag(parser.getAttributeValue(null, "value"));
                     }
-                    else if(attrName.equals(provider + ".descriptionTag"))
+                    else if(attrName.equalsIgnoreCase(provider + ".descriptionTag"))
                     {
                         info.setDescriptionTag(parser.getAttributeValue(null,"value"));
                     }
-                    else if(attrName.equals(provider + ".url"))
+                    else if(attrName.equalsIgnoreCase(provider + ".url"))
                     {
                         info.addUrl(parser.getAttributeValue(null, "value"));
                     }
-                    break;
+                 //   break;
                 }
                 eventType = parser.next();
             }
         }
         catch (Exception e)
         {
-            Log.d("loadProviders", "Caught an exeption: " + e.toString());
+            Log.d("loadProviderInfo", "Caught an exeption: " + e.toString() + e.getMessage());
             e.printStackTrace();
+            StackTraceElement st[] = e.getStackTrace();
+            for(int i=0; i < st.length; i++)
+            {
+                Log.d("loadProviderInfo", "StackTraceElement[" + i + "] " + st[i].getLineNumber());
+
+            }
         }
 
 
@@ -114,9 +124,13 @@ public class SiteConfig {
             while (eventType != XmlPullParser.END_DOCUMENT) {
                 if (eventType == XmlPullParser.START_TAG
                         && parser.getName().equalsIgnoreCase("siteproviders")) {
-                    String attrValue = parser.getAttributeValue(null,
-                            "attribute");
-                    names = new ArrayList<String>(Arrays.asList(parser.getAttributeValue(null, "providers").split(",")));
+
+                   String[] parsedNames = parser.getAttributeValue(null, "value").split(",");
+
+                    for (int i=0; i < parsedNames.length; i++)
+                    {
+                        names.add(i, parsedNames[i]);
+                    }
                     break;
                 }
                 eventType = parser.next();
@@ -124,8 +138,15 @@ public class SiteConfig {
         }
         catch (Exception e)
         {
-            Log.d("loadProviders", "Caught an exeption: " + e.toString());
+            Log.d("loadProviderInfo", "Caught an exeption: " + e.toString() + e.getMessage());
             e.printStackTrace();
+            StackTraceElement st[] = e.getStackTrace();
+            for(int i=0; i < st.length; i++)
+            {
+                Log.d("loadProviderInfo", "StackTraceElement[" + i + "] " + st[i].getLineNumber());
+
+            }
+
         }
 
         return names;

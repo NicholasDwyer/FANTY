@@ -91,7 +91,7 @@ public class ResultsActivity extends Activity {
          */
 
         SiteConfig siteConfig = new SiteConfig();
-        siteConfig.loadConfig(getApplicationContext(), R.xml.sites);
+        siteConfig.loadConfig(this, R.xml.sites);
         ArrayList<RSSProviderInfo> siteConfigProvierInfos = siteConfig.getProvierInfos();
 
         for (int k = 0; k < siteConfigProvierInfos.size(); k++) {
